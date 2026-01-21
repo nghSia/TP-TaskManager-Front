@@ -4,12 +4,17 @@ import {TaskService} from '../services/taskService';
 import {Status, Tasks} from '../interfaces/tasks';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {TaskStatusPipe} from '../pipe/task-status-pipe';
+import {ConfirmDialog} from './confirm-dialog/confirm-dialog';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-task-list',
   imports: [
     RouterLink,
-    TaskStatusPipe
+    TaskStatusPipe,
+    MatDialogModule,
+    DatePipe
   ],
   templateUrl: './task-list.html',
   styleUrl: './task-list.css',
@@ -17,6 +22,7 @@ import {TaskStatusPipe} from '../pipe/task-status-pipe';
 export class TaskList implements OnInit {
   private taskService: TaskService = inject(TaskService)
   private destroyRef = inject(DestroyRef);
+  private  readonly c_dialog = inject(MatDialog);
 
   tasks = signal<Tasks[]>([])
 
@@ -58,4 +64,22 @@ export class TaskList implements OnInit {
     }
   }
 
+  deleteTask(task : Tasks) : void {
+    this.taskService.deleteTask( task.id).subscribe({
+      next : () =>
+        this.getTasks(),
+      error : () => console.log('error')
+    })
+  }
+
+  confirmDelete(task : Tasks) : void {
+    let dialogRef = this.c_dialog.open(ConfirmDialog);
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean | undefined) => {
+      const isConfirmed = confirmed ?? false;
+      if (isConfirmed) {
+        this.deleteTask(task);
+      }
+    });
+  }
 }

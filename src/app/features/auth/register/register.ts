@@ -2,13 +2,14 @@ import {Component, DestroyRef, inject, signal} from '@angular/core';
 import {AuthService} from '../../../core/auth/services/auth-service';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Credentials} from '../../../core/auth/interfaces/credentials';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-register',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './register.html',
   styleUrl: './register.css',
