@@ -1,1 +1,69 @@
-<p>task-list works!</p>
+<div class="mx-auto max-w-5xl p-4 md:p-6">
+  <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h1 class="text-2xl font-bold tracking-tight text-slate-900">Mes tâches</h1>
+      <p class="mt-1 text-sm text-slate-500">Chaque tâche affiche uniquement son titre, sa description et la personne assignée.</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button [routerLink]="['/create']" type="button" class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        Nouvelle tâche
+      </button>
+    </div>
+  </div>
+
+  <ul class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    @for (task of tasks(); track task.id) {
+      <li class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <h3 class="truncate text-base font-semibold text-indigo-600"> {{task.title}} </h3>
+              <span class="inline-flex items-center rounded-full  px-2.5 py-0.5 text-xs font-medium " [class] = "getStatusColor(task.status)"> {{task.status | taskStatus }} </span>
+            </div>
+            <p class="mt-4 text-sm text-slate-600"> {{task.description}} </p>
+            <div class="mt-5 inline-flex items-center gap-1.5 text-sm text-slate-500">
+              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37A4.5 4.5 0 1 0 9 20.25h6.75M12 7.5v9"/></svg>
+              <span>Assignée à: {{ task.user?.username }}</span>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <button [routerLink]="['/edit', task.id]" type="button" class="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-indigo-600" title="Modifier">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.625 2.625 0 1 1 3.712 3.712L8.25 19.524l-5.25 1.312 1.312-5.25L16.862 3.487z"/></svg>
+            </button>
+            <button type="button" class="rounded-lg p-1.5 text-slate-400 transition hover:bg-red-50 hover:text-red-600" title="Supprimer">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
+            </button>
+            @if (task.status === 'PENDING') {
+              <button
+                (click)="startTask(task)"
+                type="button"
+                class="rounded-lg p-1.5 text-slate-400 transition hover:bg-amber-50 hover:text-amber-600"
+                title="Commencer la tâche">
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                </svg>
+              </button>
+            }
+            @if (task.status === 'IN_PROGRESS') {
+              <button type="button" (click)="markAsDone(task)"
+                      class="rounded-lg p-1.5 text-green-500 transition hover:bg-green-50 hover:text-green-600"
+                      title="Terminé la tache">
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75l2 2 4-4.5M12 3.75c-4.556 0-8.25 3.694-8.25 8.25s3.694 8.25 8.25 8.25 8.25-3.694 8.25-8.25-3.694-8.25-8.25-8.25z" />
+                </svg>
+              </button>
+            }
+          </div>
+        </div>
+      </li>
+    } @empty {
+      Aucune tache à afficher
+    }
+
+  </ul>
+</div>

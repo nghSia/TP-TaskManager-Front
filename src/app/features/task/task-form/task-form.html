@@ -1,7 +1,13 @@
 <div class="min-h-[40vh] grid place-items-start sm:place-items-center bg-white p-4 sm:p-8">
   <form [formGroup]="tasksForm" (ngSubmit)="onSubmit()" class="w-full max-w-2xl space-y-6 bg-blue-50 backdrop-blur border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8">
     <div class="space-y-1">
-      <h2 class="text-xl sm:text-2xl text-blue-900 font-bold text-center">Créer une tâche</h2>
+      <h2 class="text-xl sm:text-2xl text-blue-900 font-bold text-center">
+        @if (id) {
+          Modifier la tâche {{id}}
+        } @else {
+          Créer une tâche
+        }
+      </h2>
       <p class="italic text-blue-900 text-sm text-center">Renseignez les informations ci-dessous pour ajouter une nouvelle tâche.</p>
     </div>
 
@@ -47,6 +53,7 @@
     <!-- Actions -->
     <div class="flex items-center justify-center gap-3 pt-2">
       <button
+        [routerLink]="['/tasks']"
         type="button"
         class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2.5 text-slate-700 bg-white hover:bg-slate-50 transition-colors"
       >
@@ -56,7 +63,11 @@
         type="submit"
         class="inline-flex items-center justify-center rounded-lg bg-indigo-600 hover:bg-indigo-700 px-4 py-2.5 text-white shadow-sm transition-colors"
       >
-        Créer la tâche
+        @if (id) {
+          Mettre à jour
+        } @else {
+          Créer une tâche
+        }
       </button>
     </div>
   </form>

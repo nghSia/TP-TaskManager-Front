@@ -1,16 +1,17 @@
-import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, inject, OnInit, signal, WritableSignal, Input} from '@angular/core';
 import {AuthService} from '../../../core/auth/services/auth-service';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Tasks} from '../interfaces/tasks';
 import {TaskService} from '../services/taskService';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {UsersService} from '../../users/users-service';
 import {User} from '../../../core/auth/interfaces/user';
 
 @Component({
   selector: 'app-task-form',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './task-form.html',
   styleUrl: './task-form.css',
@@ -25,10 +26,24 @@ export class TaskForm implements OnInit{
 
   users: WritableSignal<User[]> = signal<User[]>([])
 
+  @Input() id?:string;
+
+
   ngOnInit() {
     if (this.authService.currentUser()?.role === 'ADMIN') {
       this.usersService.getAllUsers().subscribe({
         next: (users: User[]) => this.users.set(users),
+        error: () => console.log('error')
+      })
+    }
+
+    if (this.id) {
+      this.taskService.getTaskById(+this.id).subscribe({
+        next: (task: Tasks) => {
+          const taskData = {...task, targetUserId: task.user?.id ? task.user.id.toString() : null}
+          this.tasksForm.patchValue(taskData)
+        },
+        error: () => console.log('error')
       })
     }
   }
@@ -42,11 +57,19 @@ export class TaskForm implements OnInit{
 
   onSubmit() {
     const task :Tasks = this.tasksForm.getRawValue()
-    this.taskService.createTask(task).subscribe({
-      next: () => {
-        this.router.navigate(['/tasks'])
-      }
-    })
+    if (this.id) {
+      this.taskService.updateTask(+this.id, task).subscribe({
+        next: () => this.router.navigate(['/tasks']),
+        error: () => console.log('error')
+      })
+    } else {
+      this.taskService.createTask(task).subscribe({
+        next: () => {
+          this.router.navigate(['/tasks'])
+        },
+        error: () => console.log('error')
+      })
+    }
 
   }
 
