@@ -25,13 +25,18 @@ export class AuthService {
       .pipe(
         tap((res: AuthResponse) => {
           localStorage.setItem('token', res.access_token)
+          let user : User = jwtDecode(res.access_token);
           this.currentUser.set(jwtDecode(res.access_token))
+          localStorage.setItem('userId', user?.sub || user?.sub || '');
+          localStorage.setItem('role', user?.role || user?.role || '');
         })
       )
   }
 
   logout () {
-    localStorage.removeItem('token')
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('role');
     this.currentUser.set(null)
   }
 
@@ -54,7 +59,4 @@ export class AuthService {
       return null;
     }
   }
-
-
-
 }
