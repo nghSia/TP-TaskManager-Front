@@ -37,9 +37,9 @@
           class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         >
           <option value="" disabled selected>Sélectionner un utilisateur</option>
-          <option value="1">Jean Dupont</option>
-          <option value="2">Marie Curie</option>
-          <option value="3">Amadou Diop</option>
+          @for (user of users() ; track user.id) {
+            <option [value]="user.id" > {{ user.username }} </option>
+          }
         </select>
       </div>
     }

@@ -7,7 +7,7 @@ import {Tasks} from '../interfaces/tasks';
 @Injectable({
   providedIn: 'root',
 })
-export class Task {
+export class TaskService {
   private httpClient:HttpClient = inject(HttpClient)
   private apiUrl:string = `${environment.apiUrl}/tasks`
 

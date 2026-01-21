@@ -7,7 +7,7 @@ export interface Tasks {
   status?: Status;
   createdAt?: string;
   updatedAt?: string;
-  targetUserId?: string
+  targetUserId?: string | null
   user?: User
 }
 
