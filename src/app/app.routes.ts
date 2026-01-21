@@ -6,12 +6,13 @@ import { authGuard } from './core/auth/guards/auth-guard';
 import { TaskForm } from './features/task/task-form/task-form';
 import { Dashboard } from './features/task/dashboard/dashboard';
 import { TaskDetails } from './features/task/task-details/task-details';
-import { Admin } from './features/auth/admin/admin';
+import { Admin } from './features/admin/admin';
 import { adminGuard } from './core/auth/guards/admin-guard';
+import { guestGuard } from './core/auth/guards/guest-guard';
 
 export const routes: Routes = [
-  { path: 'register', component: Register },
-  { path: 'login', component: Login },
+  { path: 'register', component: Register, canActivate: [guestGuard] },
+  { path: 'login', component: Login, canActivate: [guestGuard] },
   { path: 'tasks', component: TaskList, canActivate: [authGuard] },
   { path: 'create', component: TaskForm, canActivate: [authGuard] },
   { path: '', redirectTo: '/tasks', pathMatch: 'full' },

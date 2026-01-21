@@ -4,27 +4,42 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"  class="space-y-6">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
       <div>
-        <label class="block text-sm/6 font-medium text-gray-900">Username</label>
+        <label class="block text-sm/6 font-medium text-gray-900">Nom d'utilisateur</label>
         <div class="mt-2">
-          <input formControlName="username" type="text"  class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
-          @if (loginForm.controls.username.hasError('required') && loginForm.controls.username.touched) {
-            <p class="mt-1 text-sm text-red-500">Username requis</p>
+          <input
+            formControlName="username"
+            type="text"
+            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+          />
+          @if (
+            loginForm.controls.username.hasError('required') && loginForm.controls.username.touched
+          ) {
+            <p class="mt-1 text-sm text-red-500">Nom d'utilisateur requis</p>
           }
         </div>
       </div>
 
       <div>
         <div class="flex items-center justify-between">
-          <label class="block text-sm/6 font-medium text-gray-900">Password</label>
+          <label class="block text-sm/6 font-medium text-gray-900">Mot de passe</label>
         </div>
         <div class="mt-2">
-          <input formControlName="password"  type="password" name="password"  class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
-          @if (loginForm.controls.password.hasError('required') && loginForm.controls.password.touched) {
+          <input
+            formControlName="password"
+            type="password"
+            name="password"
+            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+          />
+          @if (
+            loginForm.controls.password.hasError('required') && loginForm.controls.password.touched
+          ) {
             <p class="mt-1 text-sm text-red-500">Mot de passe requis</p>
           }
-          @if (loginForm.controls.password.hasError('minlength') && loginForm.controls.password.touched) {
+          @if (
+            loginForm.controls.password.hasError('minlength') && loginForm.controls.password.touched
+          ) {
             <p class="mt-1 text-sm text-red-500">Mot de passe trop court (min 6 caractères)</p>
           }
         </div>
@@ -34,11 +49,10 @@
         <button
           type="submit"
           [disabled]="loginForm.invalid"
-          class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
+          class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400 cursor-pointer"
         >
-          Sign in
+          Se connecter
         </button>
-
       </div>
 
       <p class="mt-10 text-center text-sm/6 text-red-500">
@@ -48,7 +62,9 @@
 
     <p class="mt-10 text-center text-sm/6 text-gray-500">
       Pas encore inscrit ?
-      <a class="font-semibold text-indigo-600 hover:text-indigo-500" [routerLink]="['/register']">S'inscrire</a>
+      <a class="font-semibold text-indigo-600 hover:text-indigo-500" [routerLink]="['/register']"
+        >S'inscrire</a
+      >
     </p>
   </div>
 </div>

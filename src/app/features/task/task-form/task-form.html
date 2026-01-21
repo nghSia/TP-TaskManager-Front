@@ -1,14 +1,20 @@
 <div class="min-h-[40vh] grid place-items-start sm:place-items-center bg-white p-4 sm:p-8">
-  <form [formGroup]="tasksForm" (ngSubmit)="onSubmit()" class="w-full max-w-2xl space-y-6 bg-blue-50 backdrop-blur border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8">
+  <form
+    [formGroup]="tasksForm"
+    (ngSubmit)="onSubmit()"
+    class="w-full max-w-2xl space-y-6 bg-blue-50 backdrop-blur border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8"
+  >
     <div class="space-y-1">
       <h2 class="text-xl sm:text-2xl text-blue-900 font-bold text-center">
         @if (id) {
-          Modifier la tâche {{id}}
+          Modifier la tâche {{ id }}
         } @else {
           Créer une tâche
         }
       </h2>
-      <p class="italic text-blue-900 text-sm text-center">Renseignez les informations ci-dessous pour ajouter une nouvelle tâche.</p>
+      <p class="italic text-blue-900 text-sm text-center">
+        Renseignez les informations ci-dessous pour ajouter une nouvelle tâche.
+      </p>
     </div>
 
     <!-- Titre -->
@@ -37,14 +43,16 @@
     <!-- Assigner à l'utilisateur -->
     @if (authService.currentUser()?.role === 'ADMIN') {
       <div class="grid gap-2">
-        <label for="assignee" class="text-sm font-medium text-blue-900">Assigner à l'utilisateur</label>
+        <label for="assignee" class="text-sm font-medium text-blue-900"
+          >Assigner à l'utilisateur</label
+        >
         <select
           formControlName="targetUserId"
-          class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          class="w-full appearance-none rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
         >
           <option value="" disabled selected>Sélectionner un utilisateur</option>
-          @for (user of users() ; track user.id) {
-            <option [value]="user.id" > {{ user.username }} </option>
+          @for (user of users(); track user.id) {
+            <option [value]="user.id">{{ user.username }}</option>
           }
         </select>
       </div>
@@ -55,13 +63,13 @@
       <button
         [routerLink]="['/tasks']"
         type="button"
-        class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2.5 text-slate-700 bg-white hover:bg-slate-50 transition-colors"
+        class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2.5 text-slate-700 bg-white hover:bg-slate-50 transition-colors cursor-pointer"
       >
         Annuler
       </button>
       <button
         type="submit"
-        class="inline-flex items-center justify-center rounded-lg bg-indigo-600 hover:bg-indigo-700 px-4 py-2.5 text-white shadow-sm transition-colors"
+        class="inline-flex items-center justify-center rounded-lg bg-indigo-600 hover:bg-indigo-700 px-4 py-2.5 text-white shadow-sm transition-colors cursor-pointer"
       >
         @if (id) {
           Mettre à jour
